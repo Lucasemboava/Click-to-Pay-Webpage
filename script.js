@@ -2,16 +2,22 @@ const button = document.getElementById("myButton");
 const resultDiv = document.getElementById("result");
 
 button.addEventListener("click", function() {
-    const myString = "Token string returned";
+    const myString = "This is the string returned when you click!";
     resultDiv.textContent = myString; 
 
-    // Send the string to the Android WebView's JavaScript interface:
+    // Check for and send to Android
     if (typeof Android !== 'undefined' && Android.onButtonClicked) { 
-        Android.onButtonClicked(myString); 
+        Android.sendTokenToApp(myString); 
+    }
+
+    // Check for and send to iOS
+    if (window.webkit && window.webkit.messageHandlers && window.webkit.messageHandlers.onButtonClicked) {
+        window.webkit.messageHandlers.onButtonClicked.postMessage(myString);
     } else {
-        const errorMessage = document.createElement("p");
-        errorMessage.textContent = "Android interface is not available";
-        errorMessage.style.color = "red";
-        document.body.appendChild(errorMessage);
+        // Display a message on the webpage if neither interface is found
+        const errorMessage = document.createElement("p"); 
+        errorMessage.textContent = "Neither Android nor iOS interface is available";
+        errorMessage.style.color = "red"; 
+        document.body.appendChild(errorMessage); 
     }
 });
