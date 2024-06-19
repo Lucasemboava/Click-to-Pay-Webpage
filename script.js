@@ -6,13 +6,13 @@ button.addEventListener("click", function() {
     resultDiv.textContent = myString; 
 
     // Check for and send to Android
-    if (typeof Android !== 'undefined' && Android.onButtonClicked) { 
+    if (typeof Android !== 'undefined' && Android.sendTokenToApp) { 
         Android.sendTokenToApp(myString); 
     }
 
     // Check for and send to iOS
-    if (window.webkit && window.webkit.messageHandlers && window.webkit.messageHandlers.onButtonClicked) {
-        window.webkit.messageHandlers.onButtonClicked.postMessage(myString);
+    if (window.webkit && window.webkit.messageHandlers && window.webkit.messageHandlers.ios) {
+        window.webkit.messageHandlers.ios.postMessage(myString);
     } else {
         // Display a message on the webpage if neither interface is found
         const errorMessage = document.createElement("p"); 
